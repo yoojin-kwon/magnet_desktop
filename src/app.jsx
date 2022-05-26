@@ -1,8 +1,8 @@
 import React from 'react';
-import './app.css';
+import Chat from './components/chat/chat';
 
-const App = () => {
-  return <h1>home</h1>;
+const App = ({ chatRepository }) => {
+  return <Chat chatRepository={chatRepository} />;
 };
 
 export default App;
