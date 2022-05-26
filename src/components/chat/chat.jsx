@@ -47,6 +47,7 @@ const Chat = ({ chatRepository }) => {
       <div className={styles.list} ref={scrollRef}>
         {chatList?.map((chat) => (
           <div className={styles.chat} key={chat.createdAt}>
+            <span className={styles.user}>👩 유진</span>
             <span className={styles.message}>{chat.message}</span>
             <span className={styles.time}>{convertTime(chat.createdAt)}</span>
           </div>
@@ -58,7 +59,7 @@ const Chat = ({ chatRepository }) => {
           type='text'
           name='message'
           ref={messageRef}
-          placeholder='메시지 보내기...'
+          placeholder='메시지 남기기'
           maxLength={120}
         />
         <button className={styles.button} type='submit'>
