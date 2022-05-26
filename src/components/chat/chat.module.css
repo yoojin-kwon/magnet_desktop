@@ -1,0 +1,67 @@
+.container {
+  border: 1px solid darkgrey;
+  width: 35em;
+  height: 40em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form {
+  display: flex;
+}
+
+.input {
+  width: 32em;
+  height: 3em;
+  padding: 0 1em;
+  border: 2px solid black;
+  border-radius: 10rem;
+  cursor: pointer;
+}
+
+.input:focus {
+  outline-color: rgb(115, 156, 192);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+}
+
+.list {
+  border: 1px solid rgb(202, 141, 141);
+  width: 30em;
+  height: 35em;
+  padding: 1em;
+  overflow-y: scroll;
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}
+
+.chat {
+  display: flex;
+  align-items: flex-end;
+  margin: 1em 0;
+}
+
+.message {
+  background-color: rgb(233, 233, 233);
+  border-radius: 10rem;
+  font-size: 0.8rem;
+  padding: 0.8rem;
+}
+
+.time {
+  font-size: 0.5rem;
+  color: rgb(59, 59, 59);
+  padding-left: 1em;
+  padding-bottom: 1em;
+}

@@ -1,19 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { firebaseDatabase } from '../../service/firebase';
+import styles from './chat.module.css';
+import { FiSend } from 'react-icons/fi';
 
 const Chat = ({ chatRepository }) => {
   const [chatList, setChatList] = useState();
   const messageRef = useRef();
   const formRef = useRef();
+  const scrollRef = useRef();
 
   const onSubmit = (event) => {
     event.preventDefault();
-    const message = {
-      createdAt: Date.now(),
-      message: messageRef.current.value || '',
-    };
-    chatRepository.sendChat(message);
-    formRef.current.reset();
+    if (messageRef.current.value === '') {
+      alert('메시지를 입력해주세요🙂');
+    } else {
+      const message = {
+        createdAt: Date.now(),
+        message: messageRef.current.value,
+      };
+      chatRepository.sendChat(message);
+      formRef.current.reset();
+    }
   };
 
   useEffect(() => {
@@ -22,29 +29,43 @@ const Chat = ({ chatRepository }) => {
       const value = snapshot.val();
       setChatList(Object.values(value));
     });
-  }, []);
+  }, [chatList]);
+
+  const convertTime = (unixTime) => {
+    const date = new Date(unixTime);
+    const hour = date.getHours();
+    const minutes = date.getMinutes();
+    if (hour >= 12) {
+      return `오후 ${hour}:${minutes}`;
+    } else {
+      return `오전 ${hour}:${minutes}`;
+    }
+  };
 
   return (
-    <>
-      <div>
-        {chatList.map((chat) => (
-          <div>
-            <span key={chat.createdAt}>{chat.message}</span>
-            <span> {chat.createdAt}</span>
+    <div className={styles.container}>
+      <div className={styles.list} ref={scrollRef}>
+        {chatList?.map((chat) => (
+          <div className={styles.chat} key={chat.createdAt}>
+            <span className={styles.message}>{chat.message}</span>
+            <span className={styles.time}>{convertTime(chat.createdAt)}</span>
           </div>
         ))}
       </div>
-      <form ref={formRef} onSubmit={onSubmit}>
+      <form className={styles.form} ref={formRef} onSubmit={onSubmit}>
         <input
+          className={styles.input}
           type='text'
           name='message'
           ref={messageRef}
           placeholder='메시지 보내기...'
           maxLength={120}
         />
-        <button type='submit'>전송</button>
+        <button className={styles.button} type='submit'>
+          <FiSend size='24' />
+        </button>
       </form>
-    </>
+    </div>
   );
 };
 
