@@ -1,3 +1,5 @@
+@value magnetGrey2, magnetGrey3 from '../../common/colors.css';
+
 .container {
   width: 30em;
   height: 32em;
@@ -12,7 +14,7 @@
 }
 
 .input {
-  background-color: rgb(224, 224, 224);
+  background-color: magnetGrey3;
   border: none;
   width: 28em;
   height: 2.8em;
@@ -23,7 +25,7 @@
 
 .input::placeholder {
   font-size: 0.9em;
-  font-weight: 600;
+  font-weight: 550;
 }
 
 .input:focus {
@@ -37,7 +39,7 @@
   background: transparent;
   border: transparent;
   cursor: pointer;
-  color: rgb(224, 224, 224);
+  color: magnetGrey3;
 }
 
 .button:hover {
@@ -71,12 +73,12 @@
   display: inline-block;
   max-width: 24em;
   font-size: 0.8em;
-  font-weight: 600;
+  font-weight: 550;
   padding: 0 1.2em 0 0.7em;
 }
 
 .time {
   font-size: 0.5rem;
-  font-weight: 500;
-  color: rgb(121, 121, 121);
+  font-weight: 550;
+  color: magnetGrey2;
 }
