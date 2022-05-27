@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTheme } from '../context/themeProvider';
 import ThemeToggle from '../theme/themeToggle';
-import Header from './header/header';
+import Header from './header';
 
 const AppLayout = ({ children, navigate }) => {
   const [ThemeMode, toggleTheme] = useTheme();

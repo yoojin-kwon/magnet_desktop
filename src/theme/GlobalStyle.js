@@ -8,5 +8,10 @@ export const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.backgroundColor};
     color: ${({ theme }) => theme.textcolor};
     box-sizing: border-box;
+    
+    
+    a {
+      text-decoration: none;
+    }
   }
   `;

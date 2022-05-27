@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { firebaseDatabase } from '../../service/firebase';
-import AppLayout from '../AppLayout';
+import { firebaseDatabase } from '../service/firebase';
+import AppLayout from './AppLayout';
 import styled from 'styled-components';
 import { FiSend } from 'react-icons/fi';
-import { useTheme } from '../../context/themeProvider';
+import { useTheme } from '../context/themeProvider';
 
 const Chat = ({ chatRepository }) => {
   const ThemeMode = useTheme();
