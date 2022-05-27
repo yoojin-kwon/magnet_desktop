@@ -1,33 +1,28 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, memo } from 'react';
 import { firebaseDatabase } from '../service/firebase';
 import AppLayout from './AppLayout';
 import styled from 'styled-components';
 import { FiSend } from 'react-icons/fi';
-import { useTheme } from '../context/themeProvider';
 
-const Chat = ({ chatRepository }) => {
-  const ThemeMode = useTheme();
+const Chat = memo(({ chatRepository }) => {
   const [chatList, setChatList] = useState();
   const messageRef = useRef();
   const formRef = useRef();
   const scrollRef = useRef();
 
-  const onSubmit = useCallback(
-    (event) => {
-      event.preventDefault();
-      if (messageRef.current.value === '') {
-        alert('메시지를 입력해주세요🙂');
-      } else {
-        const message = {
-          createdAt: Date.now(),
-          message: messageRef.current.value,
-        };
-        chatRepository.sendChat(message);
-        formRef.current.reset();
-      }
-    },
-    [{ chatRepository }]
-  );
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (messageRef.current.value === '') {
+      alert('메시지를 입력해주세요🙂');
+    } else {
+      const message = {
+        createdAt: Date.now(),
+        message: messageRef.current.value,
+      };
+      chatRepository.sendChat(message);
+      formRef.current.reset();
+    }
+  };
 
   useEffect(() => {
     const ref = firebaseDatabase.ref('user1/messages');
@@ -35,6 +30,16 @@ const Chat = ({ chatRepository }) => {
       const value = snapshot.val();
       setChatList(Object.values(value));
     });
+    return () => ref.off();
+  }, []);
+
+  const scrollToBottom = useCallback(() => {
+    scrollRef.current.scrollTop =
+      scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
+  });
+
+  useEffect(() => {
+    scrollToBottom();
   }, [chatList]);
 
   const convertTime = (unixTime) => {
@@ -77,7 +82,7 @@ const Chat = ({ chatRepository }) => {
       </Container>
     </AppLayout>
   );
-};
+});
 
 export default Chat;
 
