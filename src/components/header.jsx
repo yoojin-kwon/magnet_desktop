@@ -3,20 +3,22 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTheme } from '../context/themeProvider';
 
-const Header = ({ navigate }) => {
+const Header = ({ navigate, logout }) => {
   const ThemeMode = useTheme();
 
   return (
     <Container>
       <Logo theme={ThemeMode[0]}>MAGNET</Logo>
       <Navigate theme={ThemeMode[0]}>
-        <NavLink to='/' theme={ThemeMode[0]}>
+        <NavLink to='/home' theme={ThemeMode[0]}>
           Home
         </NavLink>
         {'  '}/{'  '}
         <NavLink to='/chat' theme={ThemeMode[0]}>
           Chat
         </NavLink>
+        {'  '}/{'  '}
+        {logout && <button onClick={logout}>Logout</button>}
       </Navigate>
     </Container>
   );

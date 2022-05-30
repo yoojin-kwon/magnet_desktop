@@ -4,11 +4,11 @@ import { useTheme } from '../context/themeProvider';
 import ThemeToggle from '../theme/themeToggle';
 import Header from './header';
 
-const AppLayout = ({ children, navigate }) => {
+const AppLayout = ({ children, navigate, logout }) => {
   const [ThemeMode, toggleTheme] = useTheme();
   return (
     <WrapContainer>
-      <Header navigate={navigate} />
+      <Header navigate={navigate} logout={logout} />
       <ThemeToggle toggle={toggleTheme} mode={ThemeMode} />
       <ContentContainer>{children}</ContentContainer>
     </WrapContainer>
