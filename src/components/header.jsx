@@ -9,21 +9,21 @@ const Header = ({ navigate, logout }) => {
   return (
     <Container>
       <Logo theme={ThemeMode[0]}>MAGNET</Logo>
-      <Navigate theme={ThemeMode[0]}>
-        <NavLink to='/home' theme={ThemeMode[0]}>
-          Home
-        </NavLink>
-        {'  '}/{'  '}
-        <NavLink to='/chat' theme={ThemeMode[0]}>
-          Chat
-        </NavLink>
-        {logout && (
-          <>
+      {logout && (
+        <>
+          <Navigate theme={ThemeMode[0]}>
+            <NavLink to='/home' theme={ThemeMode[0]}>
+              Home
+            </NavLink>
+            {'  '}/{'  '}
+            <NavLink to='/chat' theme={ThemeMode[0]}>
+              Chat
+            </NavLink>
             {'  '}/{'  '}
             <Logout onClick={logout}>Logout</Logout>
-          </>
-        )}
-      </Navigate>
+          </Navigate>
+        </>
+      )}
     </Container>
   );
 };

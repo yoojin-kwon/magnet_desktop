@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState, useCallback, memo } from 'react';
-import { firebaseDatabase } from '../service/firebase';
+import { useLocation } from 'react-router-dom';
+import { firebaseAuth, firebaseDatabase } from '../service/firebase';
 import AppLayout from './AppLayout';
 import styled from 'styled-components';
 import { FiSend } from 'react-icons/fi';
 
 const Chat = memo(({ chatRepository }) => {
+  const user = firebaseAuth.currentUser;
+  const logout = () => {
+    firebaseAuth.signOut();
+  };
   const [chatList, setChatList] = useState();
   const messageRef = useRef();
   const formRef = useRef();
@@ -56,7 +61,7 @@ const Chat = memo(({ chatRepository }) => {
   };
 
   return (
-    <AppLayout navigate='Chat'>
+    <AppLayout navigate='Chat' logout={logout}>
       <Container>
         <List ref={scrollRef}>
           {chatList?.map((chat) => (

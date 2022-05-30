@@ -7,15 +7,18 @@ import styled from 'styled-components';
 const Home = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState();
-  const logout = () => {
-    firebaseAuth.signOut();
-    console.log('로그아웃');
+  const logout = (user) => {
+    if (user) {
+      return firebaseAuth.signOut();
+    } else {
+      return;
+    }
   };
 
   useEffect(() => {
     firebaseAuth.onAuthStateChanged((user) => {
       if (user) {
-        setUser(user.email);
+        setUser(user);
       } else {
         navigate('/');
       }
@@ -24,7 +27,7 @@ const Home = () => {
 
   return (
     <AppLayout logout={logout}>
-      <SpeechBubble>{user} 님, 반갑습니다😀</SpeechBubble>
+      <SpeechBubble>{user?.email} 님, 반갑습니다😀</SpeechBubble>
     </AppLayout>
   );
 };
