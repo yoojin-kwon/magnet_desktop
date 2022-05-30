@@ -99,7 +99,7 @@ const Title = styled.div`
   text-align: center;
   font-size: 1.2em;
   font-weight: 600;
-  background: linear-gradient(to right top, #861657, #ffa69e);
+  background: linear-gradient(to right top, #c6c937, #3c68b9);
   color: transparent;
   -webkit-background-clip: text;
   margin-bottom: 4em;
@@ -146,7 +146,7 @@ const ToSignIn = styled.div`
 `;
 
 const NavLink = styled(Link)`
-  font-weight: 600;
+  font-weight: 550;
   color: ${(props) =>
     props.theme === 'light' ? 'rgb(34, 34, 34)' : 'rgb(247, 247, 247)'};
   margin: 0 0.5em;

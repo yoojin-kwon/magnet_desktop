@@ -97,7 +97,7 @@ const Title = styled.div`
   text-align: center;
   font-size: 1.2em;
   font-weight: 600;
-  background: linear-gradient(to right top, #861657, #ffa69e);
+  background: linear-gradient(to right top, #c6c937, #3c68b9);
   color: transparent;
   -webkit-background-clip: text;
   margin-bottom: 4em;

@@ -17,8 +17,12 @@ const Header = ({ navigate, logout }) => {
         <NavLink to='/chat' theme={ThemeMode[0]}>
           Chat
         </NavLink>
-        {'  '}/{'  '}
-        {logout && <button onClick={logout}>Logout</button>}
+        {logout && (
+          <>
+            {'  '}/{'  '}
+            <Logout onClick={logout}>Logout</Logout>
+          </>
+        )}
       </Navigate>
     </Container>
   );
@@ -54,4 +58,14 @@ const NavLink = styled(Link)`
   color: ${(props) =>
     props.theme === 'light' ? 'rgb(34, 34, 34)' : 'rgb(247, 247, 247)'};
   margin: 0 0.5em;
+`;
+
+const Logout = styled.button`
+  /* color: ${(props) =>
+    props.theme === 'light' ? 'rgb(34, 34, 34)' : 'rgb(247, 247, 247)'}; */
+  background-color: transparent;
+  border: transparent;
+  font-size: 1em;
+  font-weight: 600;
+  color: ${({ theme }) => theme.textColor};
 `;
