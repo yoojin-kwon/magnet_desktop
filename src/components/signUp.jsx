@@ -16,7 +16,7 @@ const SignUp = () => {
     try {
       await firebaseAuth
         .createUserWithEmailAndPassword(email, password) //
-        .then((data) => goToSignIn(data.user.uid));
+        .then(goToSignIn());
     } catch (error) {
       // console.error(error);
       if (error.code === 'auth/invalid-email') {
@@ -32,12 +32,13 @@ const SignUp = () => {
     formRef.current.reset();
   };
 
-  const goToSignIn = (userId) => {
-    navigate('/signin', { state: { id: userId } });
+  const goToSignIn = () => {
+    navigate('/');
   };
 
   return (
     <AppLayout>
+      <div>sign up</div>
       <form onSubmit={onSubmit} ref={formRef}>
         {/* --remove autocomplete-- */}
         <input style={{ display: 'none' }} aria-hidden='true' />
