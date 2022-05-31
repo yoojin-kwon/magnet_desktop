@@ -146,7 +146,7 @@ const ToSignIn = styled.div`
 `;
 
 const NavLink = styled(Link)`
-  font-weight: 550;
+  font-weight: 600;
   color: ${(props) =>
     props.theme === 'light' ? 'rgb(34, 34, 34)' : 'rgb(247, 247, 247)'};
   margin: 0 0.5em;
