@@ -1,11 +1,19 @@
 import React, { useRef } from 'react';
-import { firebaseDatabase } from '../service/firebase';
+import { firebaseDatabase, firebaseAuth } from '../service/firebase';
 import AppLayout from './AppLayout';
 
 const Channel = () => {
   const nameRef = useRef();
   const commentRef = useRef();
   const formRef = useRef();
+
+  const logout = (user) => {
+    if (user) {
+      return firebaseAuth.signOut();
+    } else {
+      return;
+    }
+  };
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -23,7 +31,7 @@ const Channel = () => {
   };
 
   return (
-    <AppLayout>
+    <AppLayout logout={logout}>
       <form ref={formRef} onSubmit={onSubmit}>
         <input ref={nameRef} type='text' placeholder='이름' />
         <input ref={commentRef} type='text' placeholder='코멘트' />

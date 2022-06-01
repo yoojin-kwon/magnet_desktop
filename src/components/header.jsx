@@ -16,8 +16,8 @@ const Header = ({ navigate, logout }) => {
               Home
             </NavLink>
             {'  '}/{'  '}
-            <NavLink to='/chat' theme={ThemeMode[0]}>
-              Chat
+            <NavLink to='/channel' theme={ThemeMode[0]}>
+              Channel
             </NavLink>
             {'  '}/{'  '}
             <Logout onClick={logout}>Logout</Logout>
