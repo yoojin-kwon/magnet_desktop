@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { firebaseAuth, firebaseDatabase } from '../service/firebase';
 import AppLayout from './AppLayout';
 import styled from 'styled-components';
+import ChannelList from './channelList';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -35,17 +36,38 @@ const Home = () => {
       });
   }, []);
 
+  const joinChannel = (channelId) => {
+    // firebaseDatabase
+    //   .ref(`channels/${channelId}/members`)
+    //   .get()
+    //   .then((snapshot) => {
+    //     if (snapshot.exists()) {
+    //       const members = Object.values(snapshot.val());
+    //       console.log(members);
+    //     }
+    //   });
+
+    firebaseDatabase
+      .ref(`channels/${channelId}`)
+      .child('members')
+      .push(user.uid)
+      .then((snapshot) => console.log(snapshot));
+  };
+
+  const goToChat = (channelId) => {
+    navigate(`/chat/${channelId}`);
+  };
+
   return (
     <AppLayout logout={logout}>
       <Container>
         <SpeechBubble>{user?.email} 님, 반갑습니다😀</SpeechBubble>
         {channels?.map((channel) => (
-          <ChannelList>
-            <div>#{channel.channelName}</div>
-            <div>{channel.channelComment}</div>
-            <button>Join?</button>
-            <button>Chat</button>
-          </ChannelList>
+          <ChannelList
+            channel={channel}
+            joinChannel={joinChannel}
+            goToChat={goToChat}
+          />
         ))}
       </Container>
     </AppLayout>
@@ -83,8 +105,4 @@ const SpeechBubble = styled.div`
     margin-left: -0.312em;
     margin-bottom: -0.625em;
   }
-`;
-
-const ChannelList = styled.div`
-  display: flex;
 `;

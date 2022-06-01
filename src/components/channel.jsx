@@ -13,6 +13,7 @@ const Channel = () => {
       createdAt: Date.now(),
       channelName: nameRef.current.value,
       channelComment: commentRef.current.value,
+      members: 0,
     };
     firebaseDatabase
       .ref(`channels/${channel.createdAt}`)

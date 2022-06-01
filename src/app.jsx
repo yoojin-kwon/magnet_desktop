@@ -15,13 +15,13 @@ const App = ({ chatRepository }) => {
         <GlobalStyle />
         <Routes>
           <Route exact path='/' element={<SignIn />} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/home' element={<Home />} />
+          <Route path='signup' element={<SignUp />} />
+          <Route path='home' element={<Home />} />
           <Route
-            path='/chat'
+            path='chat/:channelId'
             element={<Chat chatRepository={chatRepository} />}
           />
-          <Route path='/channel' element={<Channel />} />
+          <Route path='channel' element={<Channel />} />
         </Routes>
       </ThemeProvider>
     </Router>
