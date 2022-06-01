@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState, useCallback, memo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { firebaseAuth, firebaseDatabase } from '../service/firebase';
 import AppLayout from './AppLayout';
 import styled from 'styled-components';
 import { FiSend } from 'react-icons/fi';
 
 const Chat = memo(({ chatRepository }) => {
+  const channelId = useParams();
   const user = firebaseAuth.currentUser;
   const logout = () => {
     firebaseAuth.signOut();
@@ -17,6 +18,7 @@ const Chat = memo(({ chatRepository }) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
+    const id = channelId.channelId;
     if (messageRef.current.value === '') {
       alert('메시지를 입력해주세요🙂');
     } else {
@@ -24,13 +26,15 @@ const Chat = memo(({ chatRepository }) => {
         createdAt: Date.now(),
         message: messageRef.current.value,
       };
-      chatRepository.sendChat(message);
+      firebaseDatabase.ref(`channels/${id}/chat`).push(message);
+      // chatRepository.sendChat(message);
       formRef.current.reset();
     }
   };
 
   useEffect(() => {
-    const ref = firebaseDatabase.ref('user1/messages');
+    const id = channelId.channelId;
+    const ref = firebaseDatabase.ref(`channels/${id}/chat`);
     ref.on('value', (snapshot) => {
       const value = snapshot.val();
       setChatList(Object.values(value));
