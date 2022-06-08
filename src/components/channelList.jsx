@@ -9,7 +9,7 @@ const ChannelList = ({ channel, joinChannel, goToChat }) => {
     firebaseDatabase
       .ref(`channels/${channel.createdAt}/members`) //
       .on('value', (snapshot) => {
-        const userId = Object.values(snapshot.val());
+        const userId = Object.values(snapshot.val()).map((el) => el.userId);
         setJoin(userId.includes(user));
       });
   }, []);

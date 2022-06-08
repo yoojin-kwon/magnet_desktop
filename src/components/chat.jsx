@@ -4,6 +4,7 @@ import { firebaseAuth, firebaseDatabase } from '../service/firebase';
 import AppLayout from './AppLayout';
 import styled from 'styled-components';
 import { FiSend } from 'react-icons/fi';
+import { BsPersonCircle } from 'react-icons/bs';
 
 const Chat = memo(({ chatRepository }) => {
   const channelId = useParams();
@@ -12,6 +13,7 @@ const Chat = memo(({ chatRepository }) => {
     firebaseAuth.signOut();
   };
   const [chatList, setChatList] = useState();
+  const [memberList, setMemberList] = useState();
   const messageRef = useRef();
   const formRef = useRef();
   const scrollRef = useRef();
@@ -25,19 +27,26 @@ const Chat = memo(({ chatRepository }) => {
       const message = {
         createdAt: Date.now(),
         message: messageRef.current.value,
+        userId: user.uid,
+        userName: user.email.split('@')[0],
       };
       firebaseDatabase.ref(`channels/${id}/chat`).push(message);
-      // chatRepository.sendChat(message);
       formRef.current.reset();
     }
   };
 
   useEffect(() => {
     const id = channelId.channelId;
-    const ref = firebaseDatabase.ref(`channels/${id}/chat`);
-    ref.on('value', (snapshot) => {
+    const ref = firebaseDatabase.ref(`channels/${id}`);
+
+    ref.child('chat').on('value', (snapshot) => {
       const value = snapshot.val();
       setChatList(Object.values(value));
+    });
+
+    ref.child('members').on('value', (snapshot) => {
+      const value = snapshot.val();
+      setMemberList(Object.values(value));
     });
     // return () => ref.off();
   }, []);
@@ -52,25 +61,36 @@ const Chat = memo(({ chatRepository }) => {
   }, [chatList]);
 
   const convertTime = (unixTime) => {
-    const date = new Date(unixTime);
-    const hour = date.getHours();
-    const minutes = date.getMinutes();
+    const time = new Date(unixTime);
+    const year = time.getFullYear();
+    const month = time.getMonth() + 1;
+    const date = time.getDate();
+    const hour = time.getHours();
+    const minutes = String(time.getMinutes()).padStart(2, '0');
     if (hour > 12) {
-      return `오후 ${hour - 12}:${minutes}`;
+      return `${year}.${month}.${date} 오후 ${hour - 12}:${minutes}`;
     } else if (hour === 12) {
-      return `오후 ${hour}:${minutes}`;
+      return `${year}.${month}.${date} 오후 ${hour}:${minutes}`;
     } else {
-      return `오전 ${hour}:${minutes}`;
+      return `${year}.${month}.${date} 오전 ${hour}:${minutes}`;
     }
   };
 
   return (
     <AppLayout navigate='Chat' logout={logout}>
       <Container>
+        <Profile>
+          {memberList?.map((member) => (
+            <Member>
+              <BsPersonCircle size={25} />
+              <MemberName>{member.userName}</MemberName>
+            </Member>
+          ))}
+        </Profile>
         <List ref={scrollRef}>
           {chatList?.map((chat) => (
             <Message key={chat.createdAt}>
-              <User>👩 유진</User>
+              <User>@{chat.userName}</User>
               <Text>{chat.message}</Text>
               <Time>{convertTime(chat.createdAt)}</Time>
             </Message>
@@ -104,7 +124,28 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
+const Profile = styled.div`
+  width: 90%;
+  height: 4em;
+  display: flex;
+  padding-bottom: 1em;
+`;
+
+const Member = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0.5em;
+`;
+
+const MemberName = styled.span`
+  font-size: 0.8em;
+  font-weight: 600;
+  margin-top: 0.5em;
+`;
+
 const List = styled.div`
+  width: 90%;
   height: 35em;
   padding: 1em 2em;
   overflow-y: scroll;
@@ -128,9 +169,8 @@ const User = styled.span`
 
 const Text = styled.span`
   display: inline-block;
-  max-width: 24em;
+  /* max-width: 20em; */
   font-size: 0.8em;
-  font-weight: 550;
   padding: 0 1.2em 0 0.7em;
   color: ${({ theme }) => theme.textColor};
 `;
@@ -139,10 +179,12 @@ const Time = styled.span`
   font-size: 0.5rem;
   font-weight: 550;
   color: ${({ theme }) => theme.subTextColor};
+  white-space: nowrap;
 `;
 
 const Form = styled.form`
   display: flex;
+  padding-top: 1em;
 `;
 
 const Input = styled.input`

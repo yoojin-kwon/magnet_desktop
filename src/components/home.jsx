@@ -37,12 +37,16 @@ const Home = () => {
   }, []);
 
   const joinChannel = (channelId) => {
+    const memberInfo = {
+      userId: user.uid,
+      userName: user.email.split('@')[0],
+    };
     const ref = firebaseDatabase.ref(`channels/${channelId}/members`);
     ref.get().then((snapshot) => {
       if (Object.values(snapshot.val()).includes(user.uid)) {
         alert('이미 가입하신 채널입니다🙂');
       } else {
-        ref.push(user.uid);
+        ref.push(memberInfo);
       }
     });
   };
