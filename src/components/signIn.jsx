@@ -43,7 +43,7 @@ const SignIn = () => {
         <Title>
           반가워요!
           <br />
-          마그넷과 함께 우리 가족만의 공간을 만들어보세요:)
+          자유로운 커뮤니케이션을 위한 마그넷입니다:)
         </Title>
         <Form onSubmit={onSubmit} ref={formRef}>
           {/* --remove autocomplete-- */}

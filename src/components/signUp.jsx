@@ -45,7 +45,7 @@ const SignUp = () => {
         <Title>
           안녕하세요!
           <br />
-          우리 가족만의 소통을 위한 마그넷입니다:)
+          마그넷에서 자유로운 커뮤니케이션을 즐겨보세요:)
         </Title>
         <Form onSubmit={onSubmit} ref={formRef}>
           {/* --remove autocomplete-- */}
