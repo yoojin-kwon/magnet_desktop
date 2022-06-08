@@ -37,11 +37,14 @@ const Home = () => {
   }, []);
 
   const joinChannel = (channelId) => {
-    firebaseDatabase
-      .ref(`channels/${channelId}`)
-      .child('members')
-      .push(user.uid)
-      .then((snapshot) => console.log(snapshot));
+    const ref = firebaseDatabase.ref(`channels/${channelId}/members`);
+    ref.get().then((snapshot) => {
+      if (Object.values(snapshot.val()).includes(user.uid)) {
+        alert('이미 가입하신 채널입니다🙂');
+      } else {
+        ref.push(user.uid);
+      }
+    });
   };
 
   const goToChat = (channelId, join) => {

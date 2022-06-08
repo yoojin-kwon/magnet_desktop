@@ -8,17 +8,9 @@ const ChannelList = ({ channel, joinChannel, goToChat }) => {
   useEffect(() => {
     firebaseDatabase
       .ref(`channels/${channel.createdAt}/members`) //
-      .get()
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const userId = Object.values(snapshot.val());
-          setJoin(userId.includes(user));
-        } else {
-          console.log('No data available');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
+      .on('value', (snapshot) => {
+        const userId = Object.values(snapshot.val());
+        setJoin(userId.includes(user));
       });
   }, []);
 
