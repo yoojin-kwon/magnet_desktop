@@ -37,16 +37,6 @@ const Home = () => {
   }, []);
 
   const joinChannel = (channelId) => {
-    // firebaseDatabase
-    //   .ref(`channels/${channelId}/members`)
-    //   .get()
-    //   .then((snapshot) => {
-    //     if (snapshot.exists()) {
-    //       const members = Object.values(snapshot.val());
-    //       console.log(members);
-    //     }
-    //   });
-
     firebaseDatabase
       .ref(`channels/${channelId}`)
       .child('members')
@@ -54,8 +44,12 @@ const Home = () => {
       .then((snapshot) => console.log(snapshot));
   };
 
-  const goToChat = (channelId) => {
-    navigate(`/chat/${channelId}`);
+  const goToChat = (channelId, join) => {
+    if (join === false) {
+      alert('채팅방에서 대화를 나누고 싶다면 채널에 가입해주세요🙂');
+    } else {
+      navigate(`/chat/${channelId}`);
+    }
   };
 
   return (

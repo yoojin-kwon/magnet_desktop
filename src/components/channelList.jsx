@@ -32,7 +32,7 @@ const ChannelList = ({ channel, joinChannel, goToChat }) => {
         <Button type='join' onClick={() => joinChannel(channel.createdAt)}>
           {join ? 'Join! 🥳' : 'Join? 🤔'}
         </Button>
-        <Button type='chat' onClick={() => goToChat(channel.createdAt)}>
+        <Button type='chat' onClick={() => goToChat(channel.createdAt, join)}>
           Chat 💬
         </Button>
       </div>

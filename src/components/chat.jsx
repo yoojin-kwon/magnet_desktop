@@ -39,7 +39,7 @@ const Chat = memo(({ chatRepository }) => {
       const value = snapshot.val();
       setChatList(Object.values(value));
     });
-    return () => ref.off();
+    // return () => ref.off();
   }, []);
 
   const scrollToBottom = useCallback(() => {
