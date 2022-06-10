@@ -14,14 +14,6 @@ class ChatRepository {
         setItem(Object.values(value));
       });
   }
-
-  // viewChat() {
-  //   const ref = firebaseDatabase.ref('user1/messages');
-  //   ref.on('value', (snapshot) => {
-  //     const value = snapshot.val();
-  //     console.log(value);
-  //   });
-  // }
 }
 
 export default ChatRepository;

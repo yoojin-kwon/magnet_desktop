@@ -36,7 +36,6 @@ const Chat = memo(({ logout, authService, chatRepository }) => {
     const id = channelId.channelId;
     chatRepository.showChat(id, 'chat', setChatList);
     chatRepository.showChat(id, 'members', setMemberList);
-    // return () => ref.off();
   }, []);
 
   const scrollToBottom = useCallback(() => {
