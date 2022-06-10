@@ -2,10 +2,9 @@ import React, { useState, useRef } from 'react';
 import AppLayout from './AppLayout';
 import styled from 'styled-components';
 import { useTheme } from '../context/themeProvider';
-import { firebaseAuth } from '../service/firebase';
 import { useNavigate, Link } from 'react-router-dom';
 
-const SignUp = () => {
+const SignUp = ({ authService }) => {
   const ThemeMode = useTheme();
   const navigate = useNavigate();
   const emailRef = useRef();
@@ -17,11 +16,10 @@ const SignUp = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     try {
-      await firebaseAuth
-        .createUserWithEmailAndPassword(email, password) //
+      await authService
+        .signUp(email, password) //
         .then(goToSignIn());
     } catch (error) {
-      // console.error(error);
       if (error.code === 'auth/invalid-email') {
         alert('이메일을 정확히 입력해주세요🙂');
       } else if (error.code === 'auth/weak-password') {

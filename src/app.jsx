@@ -8,20 +8,52 @@ import Channel from './components/channel';
 import { ThemeProvider } from './context/themeProvider';
 import { GlobalStyle } from './theme/GlobalStyle';
 
-const App = ({ chatRepository }) => {
+const App = ({ authService, channelRepository, chatRepository }) => {
+  const logout = (user) => {
+    if (user) {
+      return authService.logout();
+    } else {
+      return;
+    }
+  };
+
   return (
     <Router>
       <ThemeProvider>
         <GlobalStyle />
         <Routes>
-          <Route exact path='/' element={<SignIn />} />
-          <Route path='signup' element={<SignUp />} />
-          <Route path='home' element={<Home />} />
+          <Route
+            exact
+            path='/'
+            element={<SignIn authService={authService} />}
+          />
+          <Route path='signup' element={<SignUp authService={authService} />} />
+          <Route
+            path='home'
+            element={
+              <Home
+                logout={logout}
+                authService={authService}
+                channelRepository={channelRepository}
+              />
+            }
+          />
           <Route
             path='chat/:channelId'
-            element={<Chat chatRepository={chatRepository} />}
+            element={
+              <Chat
+                logout={logout}
+                authService={authService}
+                chatRepository={chatRepository}
+              />
+            }
           />
-          <Route path='channel' element={<Channel />} />
+          <Route
+            path='channel'
+            element={
+              <Channel logout={logout} channelRepository={channelRepository} />
+            }
+          />
         </Routes>
       </ThemeProvider>
     </Router>

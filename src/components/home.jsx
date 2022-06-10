@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { firebaseAuth, firebaseDatabase } from '../service/firebase';
 import AppLayout from './AppLayout';
 import styled from 'styled-components';
 import ChannelList from './channelList';
 
-const Home = () => {
+const Home = ({ logout, authService, channelRepository }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [channels, setChannels] = useState();
-  const logout = (user) => {
-    if (user) {
-      return firebaseAuth.signOut();
-    } else {
-      return;
-    }
-  };
 
   useEffect(() => {
-    firebaseAuth.onAuthStateChanged((user) => {
+    authService.authChange((user) => {
       if (user) {
         setUser(user);
       } else {
@@ -28,12 +20,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    firebaseDatabase
-      .ref('channels') //
-      .on('value', (snapshot) => {
-        const value = snapshot.val();
-        setChannels(Object.values(value));
-      });
+    channelRepository.getChannelList(setChannels);
   }, []);
 
   const joinChannel = (channelId) => {
@@ -41,12 +28,16 @@ const Home = () => {
       userId: user.uid,
       userName: user.email.split('@')[0],
     };
-    const ref = firebaseDatabase.ref(`channels/${channelId}/members`);
-    ref.get().then((snapshot) => {
-      if (Object.values(snapshot.val()).includes(user.uid)) {
+    channelRepository.getChannelMember(channelId).then((snapshot) => {
+      const data = Object.values(snapshot.val());
+      let array = [];
+      for (let i = 0; i < data.length; i++) {
+        array.push(data[i].userId);
+      }
+      if (array.includes(user.uid)) {
         alert('이미 가입하신 채널입니다🙂');
       } else {
-        ref.push(memberInfo);
+        channelRepository.joinChannel(channelId, memberInfo);
       }
     });
   };

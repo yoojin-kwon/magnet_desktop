@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTheme } from '../context/themeProvider';
 
-const Header = ({ navigate, logout }) => {
+const Header = ({ logout }) => {
   const ThemeMode = useTheme();
 
   return (
@@ -68,4 +68,5 @@ const Logout = styled.button`
   font-size: 1em;
   font-weight: 600;
   color: ${({ theme }) => theme.textColor};
+  cursor: pointer;
 `;

@@ -1,20 +1,13 @@
 import React, { useRef } from 'react';
 import AppLayout from './AppLayout';
 import styled from 'styled-components';
-import { firebaseDatabase, firebaseAuth } from '../service/firebase';
+import { useNavigate } from 'react-router-dom';
 
-const Channel = () => {
+const Channel = ({ logout, channelRepository }) => {
+  const navigate = useNavigate();
   const nameRef = useRef();
   const commentRef = useRef();
   const formRef = useRef();
-
-  const logout = (user) => {
-    if (user) {
-      return firebaseAuth.signOut();
-    } else {
-      return;
-    }
-  };
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -25,10 +18,10 @@ const Channel = () => {
       members: 0,
       chat: 0,
     };
-    firebaseDatabase
-      .ref(`channels/${channel.createdAt}`)
-      .set(channel) //
-      .then(formRef.current.reset());
+    channelRepository
+      .makeChannel(channel) //
+      .then(formRef.current.reset())
+      .then(navigate('/home'));
   };
 
   return (

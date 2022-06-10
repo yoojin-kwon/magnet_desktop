@@ -1,8 +1,18 @@
 import { firebaseDatabase } from './firebase';
 
 class ChatRepository {
-  sendChat(message) {
-    firebaseDatabase.ref(`user1/messages/${message.createdAt}`).set(message);
+  sendChat(id, message) {
+    return firebaseDatabase.ref(`channels/${id}/chat`).push(message);
+  }
+
+  showChat(id, category, setItem) {
+    firebaseDatabase
+      .ref(`channels/${id}`)
+      .child(category)
+      .on('value', (snapshot) => {
+        const value = snapshot.val();
+        setItem(Object.values(value));
+      });
   }
 
   // viewChat() {

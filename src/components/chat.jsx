@@ -6,12 +6,9 @@ import styled from 'styled-components';
 import { FiSend } from 'react-icons/fi';
 import { BsPersonCircle } from 'react-icons/bs';
 
-const Chat = memo(({ chatRepository }) => {
+const Chat = memo(({ logout, authService, chatRepository }) => {
   const channelId = useParams();
-  const user = firebaseAuth.currentUser;
-  const logout = () => {
-    firebaseAuth.signOut();
-  };
+  const user = authService.currentUser();
   const [chatList, setChatList] = useState();
   const [memberList, setMemberList] = useState();
   const messageRef = useRef();
@@ -30,24 +27,15 @@ const Chat = memo(({ chatRepository }) => {
         userId: user.uid,
         userName: user.email.split('@')[0],
       };
-      firebaseDatabase.ref(`channels/${id}/chat`).push(message);
+      chatRepository.sendChat(id, message);
       formRef.current.reset();
     }
   };
 
   useEffect(() => {
     const id = channelId.channelId;
-    const ref = firebaseDatabase.ref(`channels/${id}`);
-
-    ref.child('chat').on('value', (snapshot) => {
-      const value = snapshot.val();
-      setChatList(Object.values(value));
-    });
-
-    ref.child('members').on('value', (snapshot) => {
-      const value = snapshot.val();
-      setMemberList(Object.values(value));
-    });
+    chatRepository.showChat(id, 'chat', setChatList);
+    chatRepository.showChat(id, 'members', setMemberList);
     // return () => ref.off();
   }, []);
 

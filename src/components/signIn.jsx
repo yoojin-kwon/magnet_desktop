@@ -2,10 +2,9 @@ import React, { useRef } from 'react';
 import AppLayout from './AppLayout';
 import styled from 'styled-components';
 import { useTheme } from '../context/themeProvider';
-import { firebaseAuth } from '../service/firebase';
 import { useNavigate, Link } from 'react-router-dom';
 
-const SignIn = () => {
+const SignIn = ({ authService }) => {
   const ThemeMode = useTheme();
   const navigate = useNavigate();
   const emailRef = useRef();
@@ -17,11 +16,10 @@ const SignIn = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     try {
-      await firebaseAuth
-        .signInWithEmailAndPassword(email, password) //
+      await authService
+        .signIn(email, password)
         .then((data) => goToHome(data.user.uid));
     } catch (error) {
-      // console.error(error);
       if (error.code === 'auth/wrong-password') {
         alert('비밀번호를 다시 입력해주세요😢');
       } else if (error.code === 'auth/user-not-found') {
