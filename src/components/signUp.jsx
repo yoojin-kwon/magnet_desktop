@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import AppLayout from './AppLayout';
 import styled from 'styled-components';
 import { useTheme } from '../context/themeProvider';
@@ -141,6 +141,7 @@ const Button = styled.button`
 
 const ToSignIn = styled.div`
   font-size: 0.9em;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const NavLink = styled(Link)`

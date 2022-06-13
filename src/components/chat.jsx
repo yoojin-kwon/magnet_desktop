@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState, useCallback, memo } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { firebaseAuth, firebaseDatabase } from '../service/firebase';
+import { useTheme } from '../context/themeProvider';
 import AppLayout from './AppLayout';
 import styled from 'styled-components';
 import { FiSend } from 'react-icons/fi';
 import { BsPersonCircle } from 'react-icons/bs';
 
-const Chat = memo(({ logout, authService, chatRepository }) => {
+const Chat = ({ logout, authService, chatRepository }) => {
+  const ThemeMode = useTheme();
   const channelId = useParams();
   const user = authService.currentUser();
   const [chatList, setChatList] = useState();
@@ -29,6 +30,7 @@ const Chat = memo(({ logout, authService, chatRepository }) => {
       };
       chatRepository.sendChat(id, message);
       formRef.current.reset();
+      scrollToBottom();
     }
   };
 
@@ -36,16 +38,12 @@ const Chat = memo(({ logout, authService, chatRepository }) => {
     const id = channelId.channelId;
     chatRepository.showChat(id, 'chat', setChatList);
     chatRepository.showChat(id, 'members', setMemberList);
-  }, []);
+  }, [chatRepository, channelId]);
 
   const scrollToBottom = useCallback(() => {
     scrollRef.current.scrollTop =
       scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
-  });
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [chatList]);
+  }, []);
 
   const convertTime = (unixTime) => {
     const time = new Date(unixTime);
@@ -68,8 +66,15 @@ const Chat = memo(({ logout, authService, chatRepository }) => {
       <Container>
         <Profile>
           {memberList?.map((member) => (
-            <Member>
-              <BsPersonCircle size={25} />
+            <Member key={member.userId}>
+              <BsPersonCircle
+                size={25}
+                color={
+                  ThemeMode[0] === 'light'
+                    ? 'rgb(34, 34, 34)'
+                    : 'rgb(247, 247, 247)'
+                }
+              />
               <MemberName>{member.userName}</MemberName>
             </Member>
           ))}
@@ -98,7 +103,7 @@ const Chat = memo(({ logout, authService, chatRepository }) => {
       </Container>
     </AppLayout>
   );
-});
+};
 
 export default Chat;
 
@@ -129,6 +134,7 @@ const MemberName = styled.span`
   font-size: 0.8em;
   font-weight: 600;
   margin-top: 0.5em;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const List = styled.div`

@@ -8,7 +8,6 @@ const Home = ({ logout, authService, channelRepository }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [channels, setChannels] = useState();
-
   useEffect(() => {
     authService.authChange((user) => {
       if (user) {
@@ -17,29 +16,30 @@ const Home = ({ logout, authService, channelRepository }) => {
         navigate('/');
       }
     });
-  }, []);
 
-  useEffect(() => {
     channelRepository.getChannelList(setChannels);
-  }, []);
+  }, [authService, navigate, channelRepository]);
 
   const joinChannel = (channelId) => {
     const memberInfo = {
       userId: user.uid,
       userName: user.email.split('@')[0],
     };
-    channelRepository.getChannelMember(channelId).then((snapshot) => {
-      const data = Object.values(snapshot.val());
-      let array = [];
-      for (let i = 0; i < data.length; i++) {
-        array.push(data[i].userId);
-      }
-      if (array.includes(user.uid)) {
-        alert('이미 가입하신 채널입니다🙂');
-      } else {
-        channelRepository.joinChannel(channelId, memberInfo);
-      }
-    });
+
+    channelRepository
+      .getChannelMember(channelId) //
+      .then((snapshot) => {
+        const data = Object.values(snapshot.val());
+        let array = [];
+        for (let i = 0; i < data.length; i++) {
+          array.push(data[i].userId);
+        }
+        if (array.includes(user.uid)) {
+          alert('이미 가입하신 채널입니다🙂');
+        } else {
+          channelRepository.joinChannel(channelId, memberInfo);
+        }
+      });
   };
 
   const goToChat = (channelId, join) => {
@@ -56,9 +56,12 @@ const Home = ({ logout, authService, channelRepository }) => {
         <SpeechBubble>{user?.email} 님, 반갑습니다😀</SpeechBubble>
         {channels?.map((channel) => (
           <ChannelList
+            key={channel.createdAt}
             channel={channel}
             joinChannel={joinChannel}
             goToChat={goToChat}
+            channelRepository={channelRepository}
+            authService={authService}
           />
         ))}
       </Container>
@@ -82,6 +85,7 @@ const SpeechBubble = styled.div`
   font-size: 0.8em;
   font-weight: 550;
   margin-bottom: 4em;
+  color: ${({ theme }) => theme.textColor};
 
   &:after {
     content: '';

@@ -28,7 +28,7 @@ const useTheme = () => {
       setThemeMode('light');
       window.localStorage.setItem('theme', 'light');
     }
-  }, [ThemeMode]);
+  }, [setThemeMode, ThemeMode]);
 
   return [ThemeMode, toggleTheme];
 };

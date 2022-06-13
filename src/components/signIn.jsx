@@ -139,6 +139,7 @@ const Button = styled.button`
 
 const ToSignUp = styled.div`
   font-size: 0.9em;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const NavLink = styled(Link)`

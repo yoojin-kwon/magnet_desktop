@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTheme } from '../context/themeProvider';
 
-const Header = ({ logout }) => {
+const Header = memo(({ logout }) => {
   const ThemeMode = useTheme();
 
   return (
@@ -26,7 +26,7 @@ const Header = ({ logout }) => {
       )}
     </Container>
   );
-};
+});
 
 export default Header;
 

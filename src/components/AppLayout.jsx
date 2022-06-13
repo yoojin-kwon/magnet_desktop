@@ -6,6 +6,7 @@ import Header from './header';
 
 const AppLayout = ({ children, navigate, logout }) => {
   const [ThemeMode, toggleTheme] = useTheme();
+
   return (
     <WrapContainer>
       <Header navigate={navigate} logout={logout} />

@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { firebaseDatabase, firebaseAuth } from '../service/firebase';
 
-const ChannelList = ({ channel, joinChannel, goToChat }) => {
+const ChannelList = ({
+  channel,
+  joinChannel,
+  goToChat,
+  channelRepository,
+  authService,
+}) => {
   const [join, setJoin] = useState(false);
-  const user = firebaseAuth.currentUser.uid;
+  const user = authService.currentUser().uid;
   useEffect(() => {
-    firebaseDatabase
-      .ref(`channels/${channel.createdAt}/members`) //
-      .on('value', (snapshot) => {
-        const userId = Object.values(snapshot.val()).map((el) => el.userId);
-        setJoin(userId.includes(user));
-      });
-  }, []);
+    channelRepository.checkJoin(channel, setJoin, user);
+  }, [channel, channelRepository, user]);
 
   return (
     <List>
@@ -44,11 +44,13 @@ const List = styled.div`
 const Name = styled.div`
   font-weight: 600;
   margin-bottom: 0.4em;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const Comment = styled.div`
   font-size: 0.8em;
   width: 10em;
+  color: ${({ theme }) => theme.textColor};
 `;
 
 const Button = styled.button`

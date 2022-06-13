@@ -12,6 +12,7 @@ const ThemeToggle = ({ toggle, mode }) => {
 export default ThemeToggle;
 
 const ToggleWrapper = styled.button`
+  cursor: pointer;
   position: fixed;
   z-index: 999999;
   bottom: 4%;

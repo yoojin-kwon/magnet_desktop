@@ -6,10 +6,10 @@ class ChannelRepository {
     return ref.get();
   }
 
-  getChannelList(setChannels) {
+  getChannelList(update) {
     firebaseDatabase.ref('channels').on('value', (snapshot) => {
       const value = snapshot.val();
-      value && setChannels(Object.values(value));
+      value && update(Object.values(value));
     });
   }
 
@@ -20,6 +20,15 @@ class ChannelRepository {
   joinChannel(channelId, memberInfo) {
     const ref = firebaseDatabase.ref(`channels/${channelId}/members`);
     return ref.push(memberInfo);
+  }
+
+  checkJoin(channel, update, user) {
+    firebaseDatabase
+      .ref(`channels/${channel.createdAt}/members`)
+      .on('value', (snapshot) => {
+        const userId = Object.values(snapshot.val()).map((el) => el.userId);
+        update(userId.includes(user));
+      });
   }
 }
 
