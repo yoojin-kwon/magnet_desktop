@@ -7,6 +7,9 @@ export const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.backgroundColor};
     color: ${({ theme }) => theme.textcolor};
     box-sizing: border-box;
+    @media only screen and (max-width: 500px){
+      
+    }
     
     
     a {
